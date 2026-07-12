@@ -57,3 +57,45 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+# Portfolio CMS - Backend
+
+A RESTful API built with Laravel 12 and PostgreSQL for the Portfolio CMS project.
+
+## Tech Stack
+
+- Laravel 12
+- PostgreSQL (Supabase)
+- REST API
+- Laravel Sanctum
+
+## Features
+
+- Authentication
+- Secure REST APIs
+- CRUD Operations
+- PostgreSQL Database
+- API Token Authentication
+- Validation
+- JSON Responses
+
+## Installation
+
+```bash
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+php artisan serve
+```
+
+## API Base URL
+
+```
+http://127.0.0.1:8000/api
+```
+
+## Author
+
+Mohan Kalavalapalli
