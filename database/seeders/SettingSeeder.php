@@ -12,15 +12,16 @@ class SettingSeeder extends Seeder
      */
     public function run(): void
     {
-        Setting::create([
-            'full_name' => 'Mohan Kalavalapalli',
-            'title' => 'Laravel Full Stack Developer',
-            'email' => 'kalavalapallimohan9@gmail.com',
-            'phone' => '7981031675',
-            'location' => 'India',
-            'about' => 'Laravel Developer with 3+ years experience.',
-            'github' => 'https://github.com/KalavalapalliMohan',
-            'linkedin' => 'https://www.linkedin.com/in/mohan-kalavalapalli-7a3309259/',
-        ]);
+        Setting::updateOrCreate(
+            ['id' => 1],
+            [
+                'full_name' => 'Mohan Kalavalapalli',
+                'title' => 'Laravel Full Stack Developer',
+                'email' => 'kalavalapallimohan9@gmail.com',
+                'phone' => '7981031675',
+                'location' => 'India',
+                'about' => 'Laravel Developer with 3+ years experience.',
+            ]
+        );
     }
 }

@@ -21,10 +21,6 @@ return new class extends Migration
             $table->longText('about')->nullable();
             $table->string('resume')->nullable();
             $table->string('profile_image')->nullable();
-            $table->string('github')->nullable();
-            $table->string('linkedin')->nullable();
-            $table->string('twitter')->nullable();
-            $table->string('youtube')->nullable();
             $table->timestamps();
         });
     }
