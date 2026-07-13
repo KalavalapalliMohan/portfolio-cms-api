@@ -13,6 +13,18 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
+            $table->string('full_name');
+            $table->string('title');
+            $table->string('email');
+            $table->string('phone')->nullable();
+            $table->string('location')->nullable();
+            $table->longText('about')->nullable();
+            $table->string('resume')->nullable();
+            $table->string('profile_image')->nullable();
+            $table->string('github')->nullable();
+            $table->string('linkedin')->nullable();
+            $table->string('twitter')->nullable();
+            $table->string('youtube')->nullable();
             $table->timestamps();
         });
     }
