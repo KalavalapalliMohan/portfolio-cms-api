@@ -10,9 +10,12 @@ class SettingController extends Controller
 {
     public function index()
     {
+        $setting = Setting::first();
+
         return response()->json([
             'success' => true,
-            'data' => Setting::first()
-        ]);
+            'message' => 'Settings fetched successfully.',
+            'data' => $setting
+        ], 200);
     }
 }

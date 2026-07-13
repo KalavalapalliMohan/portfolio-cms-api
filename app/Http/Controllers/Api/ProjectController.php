@@ -9,9 +9,12 @@ class ProjectController extends Controller
 {
     public function index()
     {
+        $projects = Project::where('status', true)->get();
+
         return response()->json([
             'success' => true,
-            'data' => Project::all()
-        ]);
+            'message' => 'Projects fetched successfully.',
+            'data' => $projects
+        ], 200);
     }
 }

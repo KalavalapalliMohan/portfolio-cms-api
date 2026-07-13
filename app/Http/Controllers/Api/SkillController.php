@@ -10,9 +10,12 @@ class SkillController extends Controller
 {
     public function index()
     {
+        $skills = Skill::where('status', true)->get();
+
         return response()->json([
             'success' => true,
-            'data' => Skill::all()
-        ]);
+            'message' => 'Skills fetched successfully.',
+            'data' => $skills
+        ], 200);
     }
 }

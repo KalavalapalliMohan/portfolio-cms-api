@@ -9,9 +9,12 @@ class SocialLinkController extends Controller
 {
     public function index()
     {
+        $socialLinks = SocialLink::where('status', true)->get();
+
         return response()->json([
             'success' => true,
-            'data' => SocialLink::all()
-        ]);
+            'message' => 'Social links fetched successfully.',
+            'data' => $socialLinks
+        ], 200);
     }
 }
