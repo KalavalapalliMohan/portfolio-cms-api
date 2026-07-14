@@ -2,10 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\Api\SettingController;
-use App\Http\Controllers\Api\SkillController;
-use App\Http\Controllers\Api\ProjectController;
-use App\Http\Controllers\Api\SocialLinkController;
+use App\Http\Controllers\Api\Public\ProjectController;
+use App\Http\Controllers\Api\Public\SkillController;
+use App\Http\Controllers\Api\Public\SettingController;
+use App\Http\Controllers\Api\Public\SocialLinkController;
 use App\Http\Controllers\Api\AuthController;
 
 Route::get('/settings', [SettingController::class, 'index']);

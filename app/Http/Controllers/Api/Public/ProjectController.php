@@ -1,27 +1,27 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Public;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Skill;
-use App\Http\Resources\SkillResource;
-class SkillController extends Controller
+use App\Models\Project;
+use App\Http\Resources\ProjectResource;
+class ProjectController extends Controller
 {
     public function index()
     {
         try {
-            $skills = Skill::where('status', true)->get();
+            $projects = Project::where('status', true)->get();
 
             return response()->json([
                 'success' => true,
-                'message' => 'Skills fetched successfully.',
-                'data' => SkillResource::collection($skills)
+                'message' => 'Projects fetched successfully.',
+                'data' => ProjectResource::collection($projects),
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to fetch skills.',
+                'message' => 'Failed to fetch projects.',
                 'error' => $e->getMessage(),
             ], 500);
         }

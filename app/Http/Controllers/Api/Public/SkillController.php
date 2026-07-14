@@ -1,31 +1,29 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Public;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Setting;
-use App\Http\Resources\SettingResource;
-class SettingController extends Controller
+use App\Models\Skill;
+use App\Http\Resources\SkillResource;
+class SkillController extends Controller
 {
     public function index()
     {
         try {
-            $setting = Setting::get();
+            $skills = Skill::where('status', true)->get();
 
             return response()->json([
                 'success' => true,
-                'message' => 'Settings fetched successfully.',
-                'data' => SettingResource::collection($setting),
+                'message' => 'Skills fetched successfully.',
+                'data' => SkillResource::collection($skills)
             ], 200);
-
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to fetch settings.',
+                'message' => 'Failed to fetch skills.',
                 'error' => $e->getMessage(),
             ], 500);
         }
-
     }
 }
