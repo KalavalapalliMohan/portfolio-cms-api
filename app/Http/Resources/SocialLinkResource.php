@@ -20,6 +20,6 @@ class SocialLinkResource extends JsonResource
             'url'           => $this->url,
             'icon'          => $this->icon,
             'sort_order'    => $this->sort_order,
-        ];;
+        ];
     }
 }

@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreSocialLinkRequest extends FormRequest
+class StoreCertificateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,10 +23,11 @@ class StoreSocialLinkRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'platform'   => 'required|string|max:100',
-            'url'        => 'required|url|max:255',
-            'icon'       => 'nullable|string|max:100',
-            'sort_order' => 'nullable|integer|min:0',
+            'title'              => 'required|string|max:255',
+            'organization'       => 'required|string|max:255',
+            'issue_date'         => 'required|date',
+            'certificate_url'    => 'nullable|url',
+            'certificate_image'  => 'nullable|string',
         ];
     }
 }

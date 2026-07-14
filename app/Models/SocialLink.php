@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class SocialLink extends Model
 {
     protected $fillable = [
-
+        'id',
         'platform',
-
-        'url'
-
+        'url',
+        'icon',
+        'sort_order',
     ];
 }

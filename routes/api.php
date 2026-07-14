@@ -12,6 +12,9 @@ use App\Http\Controllers\Api\Admin\ProjectController as AdminProjectController;
 use App\Http\Controllers\Api\Admin\SkillController as AdminSkillController;
 use App\Http\Controllers\Api\Admin\ExperienceController as AdminExperienceController;
 use App\Http\Controllers\Api\Admin\EducationController as AdminEducationController;
+use App\Http\Controllers\Api\Admin\CertificateController as AdminCertificateController;
+use App\Http\Controllers\Api\Admin\SocialLinkController as AdminSocialLinkController;
+use App\Http\Controllers\Api\Admin\SettingController as AdminSettingController;
 
 Route::get('/settings', [SettingController::class, 'index']);// Public route to get settings
 Route::get('/skills', [SkillController::class, 'index']);// Public route to get skills
@@ -34,5 +37,8 @@ Route::middleware('auth:sanctum')
         Route::apiResource('skills', AdminSkillController::class);
         Route::apiResource('experiences', AdminExperienceController::class);
         Route::apiResource('educations', AdminEducationController::class);
+        Route::apiResource('certificates', AdminCertificateController::class);
+        Route::apiResource('social-links', AdminSocialLinkController::class);
+        Route::apiResource('settings', AdminSettingController::class);
 
     });

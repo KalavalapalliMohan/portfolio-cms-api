@@ -12,7 +12,7 @@ class UpdateSocialLinkRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,10 @@ class UpdateSocialLinkRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'platform'   => 'required|string|max:100',
+            'url'        => 'required|url|max:255',
+            'icon'       => 'nullable|string|max:100',
+            'sort_order' => 'nullable|integer|min:0',
         ];
     }
 }
