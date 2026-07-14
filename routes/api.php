@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\Public\SocialLinkController;
 use App\Http\Controllers\Api\AuthController;
 // Admin Controllers
 use App\Http\Controllers\Api\Admin\ProjectController as AdminProjectController;
+use App\Http\Controllers\Api\Admin\SkillController as AdminSkillController;
 
 Route::get('/settings', [SettingController::class, 'index']);// Public route to get settings
 Route::get('/skills', [SkillController::class, 'index']);// Public route to get skills
@@ -28,5 +29,6 @@ Route::middleware('auth:sanctum')
     ->group(function () {
 
         Route::apiResource('projects', AdminProjectController::class);
+        Route::apiResource('skills', AdminSkillController::class);
 
     });
