@@ -12,7 +12,7 @@ class UpdateProjectRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,8 +22,17 @@ class UpdateProjectRequest extends FormRequest
      */
     public function rules(): array
     {
+        $project = $this->route('project'); // Get the project ID from the route parameter
         return [
-            //
+            'title' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:projects,slug,' . $project->id, // Ensure the slug is unique except for the current project
+            'description' => 'required|string',
+            'technologies' => 'nullable|string',
+            'github_url' => 'nullable|url',
+            'live_url' => 'nullable|url',
+            'image' => 'nullable|string',
+            'is_featured' => 'boolean',
+            'status' => 'boolean',
         ];
     }
 }
