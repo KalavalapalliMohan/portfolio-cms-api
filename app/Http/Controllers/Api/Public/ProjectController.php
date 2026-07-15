@@ -6,24 +6,34 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Http\Resources\ProjectResource;
+use App\Traits\ApiResponse;
+
 class ProjectController extends Controller
 {
-    public function index()
+    use ApiResponse;
+    public function index(Request $request)
     {
         try {
-            $projects = Project::where('status', true)->get();
+            $projects = Project::query()
+                ->when($request->filled('search'), function ($query) use ($request) {
+                    $query->where('title', 'like', '%' . $request->search . '%')
+                        ->orWhere('description', 'like', '%' . $request->search . '%');
+                })
+                ->latest()
+                ->paginate($request->get('per_page', 10))
+                ->withQueryString();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Projects fetched successfully.',
-                'data' => ProjectResource::collection($projects),
-            ], 200);
+
+            return $this->successResponse(
+                ProjectResource::collection($projects),
+                'Projects fetched successfully.'
+            );
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to fetch projects.',
-                'error' => $e->getMessage(),
-            ], 500);
+            return $this->errorResponse(
+                'Failed to fetch projects.',
+                $e->getMessage(),
+                500
+            );
         }
     }
 }

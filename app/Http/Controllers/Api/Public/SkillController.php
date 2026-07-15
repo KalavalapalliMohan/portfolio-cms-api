@@ -6,24 +6,33 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Skill;
 use App\Http\Resources\SkillResource;
+use App\Traits\ApiResponse;
+
 class SkillController extends Controller
 {
-    public function index()
+    use ApiResponse;
+    public function index(Request $request)
     {
         try {
-            $skills = Skill::where('status', true)->get();
+            $skills = Skill::query()
+                ->when($request->filled('category'), function ($query) use ($request) {
+                    $query->where('category', $request->category);
+                })
+                ->where('status', true)
+                ->latest()
+                ->paginate($request->get('per_page', 10))
+                ->withQueryString();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Skills fetched successfully.',
-                'data' => SkillResource::collection($skills)
-            ], 200);
+            return $this->successResponse(
+                SkillResource::collection($skills),
+                'Skills fetched successfully.'
+            );
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to fetch skills.',
-                'error' => $e->getMessage(),
-            ], 500);
+            return $this->errorResponse(
+                'Failed to fetch skills.',
+                $e->getMessage(),
+                500
+            );
         }
     }
 }

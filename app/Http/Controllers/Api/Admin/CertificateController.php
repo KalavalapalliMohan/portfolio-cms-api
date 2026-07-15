@@ -9,39 +9,39 @@ use App\Http\Resources\CertificateResource;
 use App\Http\Requests\StoreCertificateRequest;
 use App\Http\Requests\UpdateCertificateRequest;
 use Illuminate\Http\JsonResponse;
+use App\Traits\ApiResponse;
 
 class CertificateController extends Controller
 {
+    use ApiResponse;
     public function index(): JsonResponse
     {
         $certificates = Certificate::latest()->paginate(10);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Certificates fetched successfully.',
-            'data' => CertificateResource::collection($certificates),
-        ]);
+        return $this->successResponse(
+            CertificateResource::collection($certificates),
+            'Certificates fetched successfully.'
+        );
     }
 
     public function store(StoreCertificateRequest $request): JsonResponse
     {
         $certificate = Certificate::create($request->validated());
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Certificate created successfully.',
-            'data' => new CertificateResource($certificate),
-        ], 201);
+        return $this->successResponse(
+            new CertificateResource($certificate),
+            'Certificate created successfully.',
+            201
+        );
     }
 
 
     public function show(Certificate $certificate): JsonResponse
     {
-        return response()->json([
-            'success' => true,
-            'message' => 'Certificate fetched successfully.',
-            'data' => new CertificateResource($certificate),
-        ]);
+        return $this->successResponse(
+            new CertificateResource($certificate),
+            'Certificate fetched successfully.'
+        );
     }
 
 
@@ -49,11 +49,10 @@ class CertificateController extends Controller
     {
         $certificate->update($request->validated());
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Certificate updated successfully.',
-            'data' => new CertificateResource($certificate),
-        ]);
+        return $this->successResponse(
+            new CertificateResource($certificate),
+            'Certificate updated successfully.'
+        );
     }
 
 
@@ -61,9 +60,9 @@ class CertificateController extends Controller
     {
         $certificate->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Certificate deleted successfully.',
-        ]);
+        return $this->successResponse(
+            null,
+            'Certificate deleted successfully.'
+        );
     }
 }

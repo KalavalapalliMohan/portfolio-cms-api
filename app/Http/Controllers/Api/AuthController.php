@@ -6,48 +6,47 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Traits\ApiResponse;
 
 class AuthController extends Controller
 {
+    use ApiResponse;
     public function login(LoginRequest $request)
     {
         $credentials = $request->validated();
 
         if (!Auth::attempt($credentials)) {
-            return response()->json([
-                "success" => false,
-                'message' => 'Invalid credentials'
-            ], 401);
+            return $this->errorResponse(
+                'Invalid credentials',
+                null,
+                401
+            );
         }
 
         $user = Auth::user();
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json([
-            "success" => true,
-            "message" => 'Login successful',
+        return $this->successResponse([
             'access_token' => $token,
-            'user' => $user,
-            // 'token_type' => 'Bearer',
-        ],200);
+            'user' => $user
+        ], 'Login successful');
     }
 
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
 
-        return response()->json([
-            "success" => true,
-            "message" => 'Logout successful',
-        ],200);
+        return $this->successResponse(
+            null,
+            'Logout successful'
+        );
     }
 
     public function me(Request $request)
     {
-        return response()->json([
-            "success" => true,
-            "message"=> 'User fetched successfully.',
-            "data" => $request->user(),
-        ], 200);
+        return $this->successResponse(
+            $request->user(),
+            'User fetched successfully.'
+        );
     }
 }

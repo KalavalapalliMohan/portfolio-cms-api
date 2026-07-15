@@ -9,39 +9,39 @@ use App\Http\Resources\EducationResource;
 use App\Http\Requests\StoreEducationRequest;
 use App\Http\Requests\UpdateEducationRequest;
 use Illuminate\Http\JsonResponse;
+use App\Traits\ApiResponse;
 
 class EducationController extends Controller
 {
+    use ApiResponse;
     public function index(): JsonResponse
     {
         $educations = Education::latest()->paginate(10);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Educations fetched successfully.',
-            'data' => EducationResource::collection($educations),
-        ]);
+        return $this->successResponse(
+            EducationResource::collection($educations),
+            'Educations fetched successfully.'
+        );
     }
 
     public function store(StoreEducationRequest $request): JsonResponse
     {
         $education = Education::create($request->validated());
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Education created successfully.',
-            'data' => new EducationResource($education),
-        ], 201);
+        return $this->successResponse(
+            new EducationResource($education),
+            'Education created successfully.',
+            201
+        );
     }
 
 
     public function show(Education $education): JsonResponse
     {
-        return response()->json([
-            'success' => true,
-            'message' => 'Education fetched successfully.',
-            'data' => new EducationResource($education),
-        ]);
+        return $this->successResponse(
+            new EducationResource($education),
+            'Education fetched successfully.'
+        );
     }
 
 
@@ -49,21 +49,19 @@ class EducationController extends Controller
     {
         $education->update($request->validated());
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Education updated successfully.',
-            'data' => new EducationResource($education),
-        ]);
+        return $this->successResponse(
+            new EducationResource($education),
+            'Education updated successfully.'
+        );
     }
-
 
     public function destroy(Education $education): JsonResponse
     {
         $education->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Education deleted successfully.',
-        ]);
+        return $this->successResponse(
+            null,
+            'Education deleted successfully.'
+        );
     }
 }

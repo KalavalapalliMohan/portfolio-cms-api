@@ -9,39 +9,60 @@ use App\Http\Resources\ProjectResource;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use Illuminate\Http\JsonResponse;
+use App\Traits\ApiResponse;
+use OpenApi\Attributes as OA;
 
 class ProjectController extends Controller
 {
-    public function index(): JsonResponse
-    {
-        $projects = Project::latest()->paginate(10);
+    use ApiResponse;
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Projects fetched successfully.',
-            'data' => ProjectResource::collection($projects),
-        ]);
+
+
+        #[OA\Get(
+            path: '/api/projects',
+            operationId: 'getProjects',
+            tags: ['Projects'],
+            summary: 'Get all projects'
+        )]
+        #[OA\Response(
+            response: 200,
+            description: 'Projects fetched successfully'
+        )]
+    public function index(Request $request): JsonResponse
+    {
+        $projects = Project::query()
+            ->when($request->filled('search'), function ($query) use ($request) {
+                $query->where('title', 'like', '%' . $request->search . '%')
+                    ->orWhere('description', 'like', '%' . $request->search . '%');
+            })
+            ->latest()
+            ->paginate($request->get('per_page', 10))
+            ->withQueryString();
+
+        return $this->successResponse(
+            ProjectResource::collection($projects),
+            'Projects fetched successfully.'
+        );
     }
 
     public function store(StoreProjectRequest $request): JsonResponse
     {
         $project = Project::create($request->validated());
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Project created successfully.',
-            'data' => new ProjectResource($project),
-        ], 201);
+        return $this->successResponse(
+            new ProjectResource($project),
+            'Project created successfully.',
+            201
+        );
     }
 
 
     public function show(Project $project): JsonResponse
     {
-        return response()->json([
-            'success' => true,
-            'message' => 'Project fetched successfully.',
-            'data' => new ProjectResource($project),
-        ]);
+        return $this->successResponse(
+            new ProjectResource($project),
+            'Project fetched successfully.'
+        );
     }
 
 
@@ -49,11 +70,10 @@ class ProjectController extends Controller
     {
         $project->update($request->validated());
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Project updated successfully.',
-            'data' => new ProjectResource($project),
-        ]);
+        return $this->successResponse(
+            new ProjectResource($project),
+            'Project updated successfully.'
+        );
     }
 
 
@@ -61,9 +81,9 @@ class ProjectController extends Controller
     {
         $project->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Project deleted successfully.',
-        ]);
+        return $this->successResponse(
+            null,
+            'Project deleted successfully.'
+        );
     }
 }

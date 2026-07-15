@@ -9,39 +9,39 @@ use App\Http\Resources\SettingResource;
 use App\Http\Requests\StoreSettingRequest;
 use App\Http\Requests\UpdateSettingRequest;
 use Illuminate\Http\JsonResponse;
+use App\Traits\ApiResponse;
 
 class SettingController extends Controller
 {
+    use ApiResponse;
     public function index(): JsonResponse
     {
         $settings = Setting::latest()->paginate(10);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Settings fetched successfully.',
-            'data' => SettingResource::collection($settings),
-        ]);
+        return $this->successResponse(
+            SettingResource::collection($settings),
+            'Settings fetched successfully.'
+        );
     }
 
     public function store(StoreSettingRequest $request): JsonResponse
     {
         $setting = Setting::create($request->validated());
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Setting created successfully.',
-            'data' => new SettingResource($setting),
-        ], 201);
+        return $this->successResponse(
+            new SettingResource($setting),
+            'Setting created successfully.',
+            201
+        );
     }
 
 
     public function show(Setting $setting): JsonResponse
     {
-        return response()->json([
-            'success' => true,
-            'message' => 'Setting fetched successfully.',
-            'data' => new SettingResource($setting),
-        ]);
+        return $this->successResponse(
+            new SettingResource($setting),
+            'Setting fetched successfully.'
+        );
     }
 
 
@@ -49,11 +49,10 @@ class SettingController extends Controller
     {
         $setting->update($request->validated());
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Setting updated successfully.',
-            'data' => new SettingResource($setting),
-        ]);
+        return $this->successResponse(
+            new SettingResource($setting),
+            'Setting updated successfully.'
+        );
     }
 
 
@@ -61,9 +60,9 @@ class SettingController extends Controller
     {
         $setting->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Setting deleted successfully.',
-        ]);
+        return $this->successResponse(
+            null,
+            'Setting deleted successfully.'
+        );
     }
 }

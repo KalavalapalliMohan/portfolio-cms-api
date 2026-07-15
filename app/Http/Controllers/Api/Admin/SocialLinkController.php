@@ -9,39 +9,39 @@ use App\Http\Resources\SocialLinkResource;
 use App\Http\Requests\StoreSocialLinkRequest;
 use App\Http\Requests\UpdateSocialLinkRequest;
 use Illuminate\Http\JsonResponse;
+use App\Traits\ApiResponse;
 
 class SocialLinkController extends Controller
 {
+    use ApiResponse;
     public function index(): JsonResponse
     {
         $socialLinks = SocialLink::latest()->paginate(10);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Social links fetched successfully.',
-            'data' => SocialLinkResource::collection($socialLinks),
-        ]);
+        return $this->successResponse(
+            SocialLinkResource::collection($socialLinks),
+            'Social links fetched successfully.'
+        );
     }
 
     public function store(StoreSocialLinkRequest $request): JsonResponse
     {
         $socialLink = SocialLink::create($request->validated());
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Social link created successfully.',
-            'data' => new SocialLinkResource($socialLink),
-        ], 201);
+        return $this->successResponse(
+            new SocialLinkResource($socialLink),
+            'Social link created successfully.',
+            201
+        );
     }
 
 
     public function show(SocialLink $socialLink): JsonResponse
     {
-        return response()->json([
-            'success' => true,
-            'message' => 'Social link fetched successfully.',
-            'data' => new SocialLinkResource($socialLink),
-        ]);
+        return $this->successResponse(
+            new SocialLinkResource($socialLink),
+            'Social link fetched successfully.'
+        );
     }
 
 
@@ -49,11 +49,10 @@ class SocialLinkController extends Controller
     {
         $socialLink->update($request->validated());
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Social link updated successfully.',
-            'data' => new SocialLinkResource($socialLink),
-        ]);
+        return $this->successResponse(
+            new SocialLinkResource($socialLink),
+            'Social link updated successfully.'
+        );
     }
 
 
@@ -61,9 +60,9 @@ class SocialLinkController extends Controller
     {
         $socialLink->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Social link deleted successfully.',
-        ]);
+        return $this->successResponse(
+            null,
+            'Social link deleted successfully.'
+        );
     }
 }

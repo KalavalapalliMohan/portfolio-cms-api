@@ -9,39 +9,39 @@ use App\Http\Resources\ExperienceResource;
 use App\Http\Requests\StoreExperienceRequest;
 use App\Http\Requests\UpdateExperienceRequest;
 use Illuminate\Http\JsonResponse;
+use App\Traits\ApiResponse;
 
 class ExperienceController extends Controller
 {
+    use ApiResponse;
     public function index(): JsonResponse
     {
         $experiences = Experience::latest()->paginate(10);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Experiences fetched successfully.',
-            'data' => ExperienceResource::collection($experiences),
-        ]);
+        return $this->successResponse(
+            ExperienceResource::collection($experiences),
+            'Experiences fetched successfully.'
+        );
     }
 
     public function store(StoreExperienceRequest $request): JsonResponse
     {
         $experience = Experience::create($request->validated());
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Experience created successfully.',
-            'data' => new ExperienceResource($experience),
-        ], 201);
+        return $this->successResponse(
+            new ExperienceResource($experience),
+            'Experience created successfully.',
+            201
+        );
     }
 
 
     public function show(Experience $experience): JsonResponse
     {
-        return response()->json([
-            'success' => true,
-            'message' => 'Experience fetched successfully.',
-            'data' => new ExperienceResource($experience),
-        ]);
+        return $this->successResponse(
+            new ExperienceResource($experience),
+            'Experience fetched successfully.'
+        );
     }
 
 
@@ -49,21 +49,19 @@ class ExperienceController extends Controller
     {
         $experience->update($request->validated());
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Experience updated successfully.',
-            'data' => new ExperienceResource($experience),
-        ]);
+        return $this->successResponse(
+            new ExperienceResource($experience),
+            'Experience updated successfully.'
+        );
     }
 
 
     public function destroy(Experience $experience): JsonResponse
     {
         $experience->delete();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Experience deleted successfully.',
-        ]);
+        return $this->successResponse(
+            null,
+            'Experience deleted successfully.'
+        );
     }
 }

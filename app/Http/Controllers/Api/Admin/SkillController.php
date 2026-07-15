@@ -9,39 +9,45 @@ use App\Http\Resources\SkillResource;
 use App\Http\Requests\StoreSkillRequest;
 use App\Http\Requests\UpdateSkillRequest;
 use Illuminate\Http\JsonResponse;
+use App\Traits\ApiResponse;
 
 class SkillController extends Controller
 {
-    public function index(): JsonResponse
+    use ApiResponse;
+    public function index(Request $request): JsonResponse
     {
-        $skills = Skill::latest()->paginate(10);
+        $skills = Skill::query()
+            ->when($request->filled('category'), function ($query) use ($request) {
+                $query->where('category', $request->category);
+            })
+            ->latest()
+            ->paginate($request->get('per_page', 10))
+            ->withQueryString();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Skills fetched successfully.',
-            'data' => SkillResource::collection($skills),
-        ]);
+        return $this->successResponse(
+            SkillResource::collection($skills),
+            'Skills fetched successfully.'
+        );
     }
 
     public function store(StoreSkillRequest $request): JsonResponse
     {
         $skill = Skill::create($request->validated());
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Skill created successfully.',
-            'data' => new SkillResource($skill),
-        ], 201);
+        return $this->successResponse(
+            new SkillResource($skill),
+            'Skill created successfully.',
+            201
+        );
     }
 
 
     public function show(Skill $skill): JsonResponse
     {
-        return response()->json([
-            'success' => true,
-            'message' => 'Skill fetched successfully.',
-            'data' => new SkillResource($skill),
-        ]);
+        return $this->successResponse(
+            new SkillResource($skill),
+            'Skill fetched successfully.'
+        );
     }
 
 
@@ -49,11 +55,10 @@ class SkillController extends Controller
     {
         $skill->update($request->validated());
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Skill updated successfully.',
-            'data' => new SkillResource($skill),
-        ]);
+        return $this->successResponse(
+            new SkillResource($skill),
+            'Skill updated successfully.'
+        );
     }
 
 
@@ -61,9 +66,9 @@ class SkillController extends Controller
     {
         $skill->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Skill deleted successfully.',
-        ]);
+        return $this->successResponse(
+            null,
+            'Skill deleted successfully.'
+        );
     }
 }

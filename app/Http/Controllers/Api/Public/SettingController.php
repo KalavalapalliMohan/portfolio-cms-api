@@ -6,25 +6,26 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Setting;
 use App\Http\Resources\SettingResource;
+use App\Traits\ApiResponse;
 class SettingController extends Controller
 {
+    use ApiResponse;
     public function index()
     {
         try {
-            $setting = Setting::get();
+            $setting = Setting::latest()->paginate(10);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Settings fetched successfully.',
-                'data' => SettingResource::collection($setting),
-            ], 200);
+            return $this->successResponse(
+                SettingResource::collection($setting),
+                'Settings fetched successfully.'
+            );
 
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to fetch settings.',
-                'error' => $e->getMessage(),
-            ], 500);
+            return $this->errorResponse(
+                'Failed to fetch settings.',
+                $e->getMessage(),
+                500
+            );
         }
 
     }
