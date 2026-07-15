@@ -17,4 +17,11 @@ class Project extends Model
         'is_featured',
         'status',
     ];
+
+    public function getImageUrlAttribute(): ?string
+    {
+        return $this->image
+            ? asset('storage/' . $this->image)
+            : null;
+    }
 }

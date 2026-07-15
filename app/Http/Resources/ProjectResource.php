@@ -19,11 +19,18 @@ class ProjectResource extends JsonResource
             'title'         => $this->title,
             'slug'          => $this->slug,
             'description'   => $this->description,
-            'image'         => $this->image,
+            'technologies'  => $this->technologies,
             'github_url'    => $this->github_url,
             'live_url'      => $this->live_url,
-            'technologies'  => $this->technologies,
+
+            'image' => $this->image,
+            'image_url' => $this->image_url,
+
             'is_featured'   => $this->is_featured,
+            'status' => $this->status,
+
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

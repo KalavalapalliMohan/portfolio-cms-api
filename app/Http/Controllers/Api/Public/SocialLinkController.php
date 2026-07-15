@@ -13,19 +13,11 @@ class SocialLinkController extends Controller
     use ApiResponse;
     public function index()
     {
-        try {
-            $socialLinks = SocialLink::latest()->paginate(10);
+        $socialLinks = SocialLink::latest()->paginate(10);
 
-            return $this->successResponse(
-                SocialLinkResource::collection($socialLinks),
-                'Social links fetched successfully.'
-            );
-        } catch (\Exception $e) {
-            return $this->errorResponse(
-                'Failed to fetch social links.',
-                $e->getMessage(),
-                500
-            );
-        }
+        return $this->successResponse(
+            SocialLinkResource::collection($socialLinks),
+            'Social links fetched successfully.'
+        );
     }
 }
