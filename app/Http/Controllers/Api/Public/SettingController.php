@@ -12,10 +12,10 @@ class SettingController extends Controller
     use ApiResponse;
     public function index()
     {
-        $setting = Setting::latest()->paginate(10);
+        $setting = Setting::latest()->first();
 
         return $this->successResponse(
-            SettingResource::collection($setting),
+            new SettingResource($setting),
             'Settings fetched successfully.'
         );
     }

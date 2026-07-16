@@ -16,10 +16,10 @@ class SettingController extends Controller
     use ApiResponse;
     public function index(): JsonResponse
     {
-        $settings = Setting::latest()->paginate(10);
+        $settings = Setting::latest()->first();
 
         return $this->successResponse(
-            SettingResource::collection($settings),
+            new SettingResource($settings),
             'Settings fetched successfully.'
         );
     }
