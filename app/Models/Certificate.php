@@ -13,4 +13,13 @@ class Certificate extends Model
         'certificate_url',
         'certificate_image',
     ];
+
+    public function getCertificateImageUrlAttribute()
+    {
+        if (!$this->certificate_image) {
+            return null;
+        }
+
+        return asset('storage/certificates/' . $this->certificate_image);
+    }
 }
