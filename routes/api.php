@@ -6,6 +6,10 @@ use App\Http\Controllers\Api\Public\ProjectController;
 use App\Http\Controllers\Api\Public\SkillController;
 use App\Http\Controllers\Api\Public\SettingController;
 use App\Http\Controllers\Api\Public\SocialLinkController;
+use App\Http\Controllers\Api\Public\ExperienceController;
+use App\Http\Controllers\Api\Public\EducationController;
+use App\Http\Controllers\Api\Public\CertificateController;
+
 use App\Http\Controllers\Api\AuthController;
 // Admin Controllers
 use App\Http\Controllers\Api\Admin\ProjectController as AdminProjectController;
@@ -20,6 +24,9 @@ use App\Http\Controllers\Api\Admin\UploadController;
 Route::get('/settings', [SettingController::class, 'index']);// Public route to get settings
 Route::get('/skills', [SkillController::class, 'index']);// Public route to get skills
 Route::get('/projects', [ProjectController::class, 'index']);// Public route to get projects
+Route::get('/experiences', [ExperienceController::class, 'index']);// Public route to get experiences
+Route::get('/educations', [EducationController::class, 'index']);// Public route to get educations
+Route::get('/certificates', [CertificateController::class, 'index']);// Public route to get certificates
 Route::get('/social-links', [SocialLinkController::class, 'index']);// Public route to get social links
 
 Route::post('/login', [AuthController::class, 'login']);// Public route to login
