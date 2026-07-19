@@ -20,6 +20,7 @@ use App\Http\Controllers\Api\Admin\CertificateController as AdminCertificateCont
 use App\Http\Controllers\Api\Admin\SocialLinkController as AdminSocialLinkController;
 use App\Http\Controllers\Api\Admin\SettingController as AdminSettingController;
 use App\Http\Controllers\Api\Admin\UploadController;
+use App\Http\Controllers\Api\Admin\DashboardController;
 
 Route::get('/settings', [SettingController::class, 'index']);// Public route to get settings
 Route::get('/skills', [SkillController::class, 'index']);// Public route to get skills
@@ -48,11 +49,8 @@ Route::middleware('auth:sanctum')
         Route::apiResource('certificates', AdminCertificateController::class);
         Route::apiResource('social-links', AdminSocialLinkController::class);
         Route::apiResource('settings', AdminSettingController::class);
-
-    });
-
-    Route::middleware('auth:sanctum')->group(function () {
-
+        Route::get('/dashboard', [DashboardController::class, 'index']);
         Route::post('/admin/upload', [UploadController::class, 'store']);
+
 
     });
