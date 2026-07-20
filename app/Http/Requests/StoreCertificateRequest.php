@@ -23,11 +23,11 @@ class StoreCertificateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title'              => 'required|string|max:255',
-            'organization'       => 'required|string|max:255',
-            'issue_date'         => 'required|date',
-            'certificate_url'    => 'nullable|url',
-            'certificate_image'  => 'nullable|string',
+            'title' => 'required|string|max:255',
+            'organization' => 'required|string|max:255',
+            'issue_date' => 'required|date',
+            'certificate_url' => 'nullable|url',
+            'certificate_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ];
     }
 }

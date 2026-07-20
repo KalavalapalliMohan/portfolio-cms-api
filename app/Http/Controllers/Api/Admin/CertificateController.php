@@ -26,13 +26,25 @@ class CertificateController extends Controller
 
     public function store(StoreCertificateRequest $request): JsonResponse
     {
-        $certificate = Certificate::create($request->validated());
+        $data = $request->validated();
+        if ($request->hasFile('certificate_image')) {
+            $imageName = time()
+                . '_' . $request->certificate_image->getClientOriginalName();
+            $request->certificate_image->storeAs(
+                'certificates',
+                $imageName,
+                'public'
+            );
+            $data['certificate_image'] = $imageName;
+        }
+        $certificate = Certificate::create($data);
 
         return $this->successResponse(
             new CertificateResource($certificate),
             'Certificate created successfully.',
             201
         );
+
     }
 
 
@@ -45,10 +57,22 @@ class CertificateController extends Controller
     }
 
 
-    public function update(UpdateCertificateRequest $request, Certificate $certificate): JsonResponse
-    {
-        $certificate->update($request->validated());
-
+    public function update(
+        UpdateCertificateRequest $request,
+        Certificate $certificate
+    ): JsonResponse {
+        $data = $request->validated();
+        if ($request->hasFile('certificate_image')) {
+            $imageName = time()
+                . '_' . $request->certificate_image->getClientOriginalName();
+            $request->certificate_image->storeAs(
+                'certificates',
+                $imageName,
+                'public'
+            );
+            $data['certificate_image'] = $imageName;
+        }
+        $certificate->update($data);
         return $this->successResponse(
             new CertificateResource($certificate),
             'Certificate updated successfully.'
