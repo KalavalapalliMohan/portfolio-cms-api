@@ -50,7 +50,7 @@ Route::middleware('auth:sanctum')
         Route::apiResource('social-links', AdminSocialLinkController::class);
         Route::apiResource('settings', AdminSettingController::class);
         Route::get('/dashboard', [DashboardController::class, 'index']);
-        Route::post('/admin/upload', [UploadController::class, 'store']);
+        Route::post('/upload', [UploadController::class, 'store']);
 
 
     });
