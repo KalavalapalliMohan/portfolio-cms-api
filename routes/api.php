@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\Public\SocialLinkController;
 use App\Http\Controllers\Api\Public\ExperienceController;
 use App\Http\Controllers\Api\Public\EducationController;
 use App\Http\Controllers\Api\Public\CertificateController;
+use App\Http\Controllers\Api\Public\ContactController;
 
 use App\Http\Controllers\Api\AuthController;
 // Admin Controllers
@@ -21,6 +22,7 @@ use App\Http\Controllers\Api\Admin\SocialLinkController as AdminSocialLinkContro
 use App\Http\Controllers\Api\Admin\SettingController as AdminSettingController;
 use App\Http\Controllers\Api\Admin\UploadController;
 use App\Http\Controllers\Api\Admin\DashboardController;
+use App\Http\Controllers\Api\Admin\MessageController;
 
 Route::get('/settings', [SettingController::class, 'index']);// Public route to get settings
 Route::get('/skills', [SkillController::class, 'index']);// Public route to get skills
@@ -29,6 +31,7 @@ Route::get('/experiences', [ExperienceController::class, 'index']);// Public rou
 Route::get('/educations', [EducationController::class, 'index']);// Public route to get educations
 Route::get('/certificates', [CertificateController::class, 'index']);// Public route to get certificates
 Route::get('/social-links', [SocialLinkController::class, 'index']);// Public route to get social links
+Route::post('/contact', [ContactController::class, 'store']);//
 
 Route::post('/login', [AuthController::class, 'login']);// Public route to login
 
@@ -51,6 +54,12 @@ Route::middleware('auth:sanctum')
         Route::apiResource('settings', AdminSettingController::class);
         Route::get('/dashboard', [DashboardController::class, 'index']);
         Route::post('/upload', [UploadController::class, 'store']);
+
+        Route::get('/messages', [MessageController::class, 'index']);
+
+        Route::get('/messages/{id}', [MessageController::class, 'show']);
+
+        Route::delete('/messages/{id}', [MessageController::class, 'destroy']);
 
 
     });
