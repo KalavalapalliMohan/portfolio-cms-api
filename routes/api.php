@@ -55,11 +55,12 @@ Route::middleware('auth:sanctum')
         Route::get('/dashboard', [DashboardController::class, 'index']);
         Route::post('/upload', [UploadController::class, 'store']);
 
+        Route::get('/messages/unread', [MessageController::class, 'unread']);
+
         Route::get('/messages', [MessageController::class, 'index']);
 
         Route::get('/messages/{id}', [MessageController::class, 'show']);
 
         Route::delete('/messages/{id}', [MessageController::class, 'destroy']);
-
 
     });

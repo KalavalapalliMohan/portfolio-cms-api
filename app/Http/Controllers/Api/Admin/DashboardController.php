@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Models\Skill;
 use App\Models\Experience;
-use App\Models\Contact;
+use App\Models\Message;
 
 class DashboardController extends Controller
 {
@@ -18,7 +18,7 @@ class DashboardController extends Controller
                 'total_projects' => Project::count(),
                 'total_skills' => Skill::count(),
                 'total_experiences' => Experience::count(),
-                'total_messages' => Contact::count(),
+                'total_messages' => Message::count(),
 
                 'recent_projects' => Project::latest()
                     ->take(5)

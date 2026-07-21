@@ -38,4 +38,24 @@ class MessageController extends Controller
 
         return $this->successResponse([], 'Message deleted successfully.');
     }
+
+    public function unread()
+    {
+        $messages = Message::where('is_read', false)
+            ->latest()
+            ->take(5)
+            ->get([
+                'id',
+                'name',
+                'subject',
+                'created_at'
+            ]);
+
+        $count = Message::where('is_read', false)->count();
+
+        return $this->successResponse([
+            'count' => $count,
+            'messages' => $messages,
+        ], 'Unread messages fetched successfully.');
+    }
 }
