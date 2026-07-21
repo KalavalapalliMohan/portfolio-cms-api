@@ -26,7 +26,22 @@ class SettingController extends Controller
 
     public function store(StoreSettingRequest $request): JsonResponse
     {
-        $setting = Setting::create($request->validated());
+        $data = $request->validated();
+
+        if ($request->hasFile('profile_image')) {
+
+            $imageName = time() . '.' . $request->file('profile_image')->extension();
+
+            $request->file('profile_image')->storeAs(
+                'settings',
+                $imageName,
+                'public'
+            );
+
+            $data['profile_image'] = $imageName;
+        }
+
+        $setting = Setting::create($data);
 
         return $this->successResponse(
             new SettingResource($setting),
@@ -47,7 +62,22 @@ class SettingController extends Controller
 
     public function update(UpdateSettingRequest $request, Setting $setting): JsonResponse
     {
-        $setting->update($request->validated());
+        $data = $request->validated();
+
+        if ($request->hasFile('profile_image')) {
+
+            $imageName = time() . '.' . $request->file('profile_image')->extension();
+
+            $request->file('profile_image')->storeAs(
+                'settings',
+                $imageName,
+                'public'
+            );
+
+            $data['profile_image'] = $imageName;
+        }
+
+        $setting->update($data);
 
         return $this->successResponse(
             new SettingResource($setting),

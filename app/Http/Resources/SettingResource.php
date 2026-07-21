@@ -24,6 +24,10 @@ class SettingResource extends JsonResource
             'about'         => $this->about,
             'resume'        => $this->resume,
             'profile_image' => $this->profile_image,
+                        // Add this
+            'profile_image_url' => $this->profile_image
+                ? asset('storage/settings/' . $this->profile_image)
+                : null,
         ];
     }
 }

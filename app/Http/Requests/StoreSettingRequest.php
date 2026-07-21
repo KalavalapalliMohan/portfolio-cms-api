@@ -23,14 +23,14 @@ class StoreSettingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'full_name'      => 'required|string|max:255',
-            'title'          => 'required|string|max:255',
-            'email'          => 'required|email|max:255',
-            'phone'          => 'nullable|string|max:20',
-            'location'       => 'nullable|string|max:255',
-            'about'          => 'nullable|string',
-            'resume'         => 'nullable|string',
-            'profile_image'  => 'nullable|string',
+            'full_name'     => 'required|string|max:255',
+            'title'         => 'required|string|max:255',
+            'email'         => 'required|email|max:255',
+            'phone'         => 'nullable|string|max:20',
+            'location'      => 'nullable|string|max:255',
+            'about'         => 'nullable|string',
+            'resume'        => 'nullable|string',
+            'profile_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ];
     }
 }
