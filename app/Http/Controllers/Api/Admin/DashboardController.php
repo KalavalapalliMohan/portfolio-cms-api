@@ -7,17 +7,35 @@ use App\Models\Project;
 use App\Models\Skill;
 use App\Models\Experience;
 use App\Models\Message;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
     public function index()
     {
+        $totalMonths = 0;
+
+        $experiences = Experience::all();
+
+        foreach ($experiences as $experience) {
+            $start = Carbon::parse($experience->start_date);
+
+            $end = $experience->currently_working
+                ? now()
+                : Carbon::parse($experience->end_date);
+
+            $totalMonths += $start->diffInMonths($end);
+        }
+
+        $years = floor($totalMonths / 12);
+        $months = $totalMonths % 12;
+
         return response()->json([
             'success' => true,
             'data' => [
                 'total_projects' => Project::count(),
                 'total_skills' => Skill::count(),
-                'total_experiences' => Experience::count(),
+                'total_experience' => "{$years} Years {$months} Months",
                 'total_messages' => Message::count(),
 
                 'recent_projects' => Project::latest()
