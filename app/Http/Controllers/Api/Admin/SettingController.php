@@ -41,6 +41,19 @@ class SettingController extends Controller
             $data['profile_image'] = $imageName;
         }
 
+        if ($request->hasFile('resume')) {
+
+            $resumeName = time() . '_' . $request->file('resume')->getClientOriginalName();
+
+            $request->file('resume')->storeAs(
+                'resume',
+                $resumeName,
+                'public'
+            );
+
+            $data['resume'] = 'resume/' . $resumeName;
+        }
+
         $setting = Setting::create($data);
 
         return $this->successResponse(
@@ -75,6 +88,19 @@ class SettingController extends Controller
             );
 
             $data['profile_image'] = $imageName;
+        }
+
+        if ($request->hasFile('resume')) {
+
+            $resumeName = time() . '_' . $request->file('resume')->getClientOriginalName();
+
+            $request->file('resume')->storeAs(
+                'resume',
+                $resumeName,
+                'public'
+            );
+
+            $data['resume'] = 'resume/' . $resumeName;
         }
 
         $setting->update($data);

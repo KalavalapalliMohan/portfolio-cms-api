@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\Public;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\SocialLink;
 use App\Http\Resources\SocialLinkResource;
 use App\Traits\ApiResponse;
@@ -11,9 +10,11 @@ use App\Traits\ApiResponse;
 class SocialLinkController extends Controller
 {
     use ApiResponse;
+
     public function index()
     {
-        $socialLinks = SocialLink::latest()->paginate(10);
+        $socialLinks = SocialLink::orderBy('sort_order')
+            ->get();
 
         return $this->successResponse(
             SocialLinkResource::collection($socialLinks),

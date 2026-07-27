@@ -29,7 +29,7 @@ class UpdateSettingRequest extends FormRequest
             'phone'         => 'nullable|string|max:20',
             'location'      => 'nullable|string|max:255',
             'about'         => 'nullable|string',
-            'resume'        => 'nullable|string',
+            'resume' => 'nullable|file|mimes:pdf,doc,docx|max:5120',
             'profile_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ];
     }

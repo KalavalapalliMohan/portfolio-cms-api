@@ -22,7 +22,10 @@ class SettingResource extends JsonResource
             'phone'         => $this->phone,
             'location'      => $this->location,
             'about'         => $this->about,
-            'resume'        => $this->resume,
+            'resume' => $this->resume,
+            'resume_url' => $this->resume
+                ? asset('storage/' . $this->resume)
+                : null,
             'profile_image' => $this->profile_image,
                         // Add this
             'profile_image_url' => $this->profile_image
