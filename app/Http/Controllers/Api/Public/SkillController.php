@@ -18,10 +18,8 @@ class SkillController extends Controller
                 $query->where('category', $request->category);
             })
             ->where('status', true)
-            ->latest()
-            ->paginate($request->get('per_page', 10))
-            ->withQueryString();
-
+            ->orderBy('id', 'asc')
+            ->get();
         return $this->successResponse(
             SkillResource::collection($skills),
             'Skills fetched successfully.'
