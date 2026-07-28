@@ -24,6 +24,15 @@ use App\Http\Controllers\Api\Admin\UploadController;
 use App\Http\Controllers\Api\Admin\DashboardController;
 use App\Http\Controllers\Api\Admin\MessageController;
 
+
+Route::get('/health', function () {
+    return response()->json([
+        'status' => 'ok',
+        'service' => 'portfolio-cms-api',
+        'timestamp' => now()
+    ]);
+});
+
 Route::get('/settings', [SettingController::class, 'index']);// Public route to get settings
 Route::get('/skills', [SkillController::class, 'index']);// Public route to get skills
 Route::get('/projects', [ProjectController::class, 'index']);// Public route to get projects
