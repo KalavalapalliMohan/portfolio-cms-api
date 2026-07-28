@@ -27,9 +27,7 @@ use App\Http\Controllers\Api\Admin\MessageController;
 
 Route::get('/health', function () {
     return response()->json([
-        'status' => 'ok',
-        'service' => 'portfolio-cms-api',
-        'timestamp' => now()
+        'status' => 'ok'
     ]);
 });
 
