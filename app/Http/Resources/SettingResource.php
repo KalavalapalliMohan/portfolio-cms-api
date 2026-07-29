@@ -23,13 +23,22 @@ class SettingResource extends JsonResource
             'location'      => $this->location,
             'about'         => $this->about,
 
-            // Supabase Storage URL
             'resume' => $this->resume,
-            'resume_url' => $this->resume,
 
-            // Supabase Storage URL
+            'resume_url' => $this->resume
+                ? env('SUPABASE_URL')
+                    . '/storage/v1/object/public/'
+                    . $this->resume
+                : null,
+
+
             'profile_image' => $this->profile_image,
-            'profile_image_url' => $this->profile_image,
+
+            'profile_image_url' => $this->profile_image
+                ? env('SUPABASE_URL')
+                    . '/storage/v1/object/public/settings/'
+                    . $this->profile_image
+                : null,
         ];
     }
 }

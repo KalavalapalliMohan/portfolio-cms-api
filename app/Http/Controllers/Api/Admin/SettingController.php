@@ -55,7 +55,8 @@ class SettingController extends Controller
 
                 $data['profile_image'] =
                     config('app.supabase_url')
-                    . '/storage/v1/object/public/settings/'
+                    . '/storage/v1/object/public/'
+                    . 'settings/'
                     . $imageName;
             }
 
@@ -77,7 +78,8 @@ class SettingController extends Controller
 
                 $data['resume'] =
                     config('app.supabase_url')
-                    . '/storage/v1/object/public/resume/'
+                    . '/storage/v1/object/public/'
+                    . 'resume/'
                     . $resumeName;
             }
 
@@ -143,7 +145,8 @@ class SettingController extends Controller
 
                 $data['profile_image'] =
                     config('app.supabase_url')
-                    . '/storage/v1/object/public/settings/'
+                    . '/storage/v1/object/public/'
+                    . 'settings/'
                     . $imageName;
             }
 
@@ -167,7 +170,8 @@ class SettingController extends Controller
 
                 $data['resume'] =
                     config('app.supabase_url')
-                    . '/storage/v1/object/public/resume/'
+                    . '/storage/v1/object/public/'
+                    . 'resume/'
                     . $resumeName;
             }
 
