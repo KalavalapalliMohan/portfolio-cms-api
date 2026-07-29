@@ -29,6 +29,7 @@ class SettingController extends Controller
     }
 
 
+
     public function store(StoreSettingRequest $request): JsonResponse
     {
         $data = $request->validated();
@@ -53,12 +54,10 @@ class SettingController extends Controller
                 );
 
 
-                $data['profile_image'] =
-                    config('app.supabase_url')
-                    . '/storage/v1/object/public/'
-                    . 'settings/'
-                    . $imageName;
+                // Save only path
+                $data['profile_image'] = $imageName;
             }
+
 
 
             // Resume Upload
@@ -76,12 +75,10 @@ class SettingController extends Controller
                 );
 
 
-                $data['resume'] =
-                    config('app.supabase_url')
-                    . '/storage/v1/object/public/'
-                    . 'resume/'
-                    . $resumeName;
+                // Save only path
+                $data['resume'] = 'resume/' . $resumeName;
             }
+
 
 
             $setting = Setting::create($data);
@@ -96,6 +93,7 @@ class SettingController extends Controller
 
         } catch (Exception $e) {
 
+
             return $this->errorResponse(
                 'File upload failed.',
                 $e->getMessage(),
@@ -106,11 +104,12 @@ class SettingController extends Controller
 
 
 
+
     public function show(Setting $setting): JsonResponse
     {
         return $this->successResponse(
             new SettingResource($setting),
-            'Setting fetched successfully.'
+            'Settings fetched successfully.'
         );
     }
 
@@ -143,11 +142,7 @@ class SettingController extends Controller
                 );
 
 
-                $data['profile_image'] =
-                    config('app.supabase_url')
-                    . '/storage/v1/object/public/'
-                    . 'settings/'
-                    . $imageName;
+                $data['profile_image'] = $imageName;
             }
 
 
@@ -168,11 +163,7 @@ class SettingController extends Controller
                 );
 
 
-                $data['resume'] =
-                    config('app.supabase_url')
-                    . '/storage/v1/object/public/'
-                    . 'resume/'
-                    . $resumeName;
+                $data['resume'] = 'resume/' . $resumeName;
             }
 
 
