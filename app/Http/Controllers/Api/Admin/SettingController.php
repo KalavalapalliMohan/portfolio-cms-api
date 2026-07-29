@@ -76,7 +76,7 @@ class SettingController extends Controller
 
 
                 // Save only path
-                $data['resume'] = 'resume/' . $resumeName;
+                $data['resume'] = $resumeName;
             }
 
 
@@ -163,7 +163,7 @@ class SettingController extends Controller
                     );
 
 
-                $data['resume'] = 'resume/' . $resumeName;
+                $data['resume'] = $resumeName;
             }
 
 
