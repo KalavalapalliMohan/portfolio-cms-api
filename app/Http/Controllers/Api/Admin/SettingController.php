@@ -46,7 +46,7 @@ class SettingController extends Controller
                     $request->file('profile_image')->extension();
 
 
-                    $disk->putFileAs(
+                    Storage::disk('supabase_settings')->putFileAs(
                         '',
                         $request->file('profile_image'),
                         $imageName,
@@ -67,7 +67,7 @@ class SettingController extends Controller
                     $request->file('resume')->getClientOriginalName();
 
 
-                    $disk->putFileAs(
+                    Storage::disk('supabase_resume')->putFileAs(
                         '',
                         $request->file('resume'),
                         $resumeName,
@@ -134,7 +134,7 @@ class SettingController extends Controller
                     $request->file('profile_image')->extension();
 
 
-                    $disk->putFileAs(
+                    Storage::disk('supabase_settings')->putFileAs(
                         '',
                         $request->file('profile_image'),
                         $imageName,
@@ -155,7 +155,7 @@ class SettingController extends Controller
                     $request->file('resume')->getClientOriginalName();
 
 
-                    $disk->putFileAs(
+                    Storage::disk('supabase_resume')->putFileAs(
                         '',
                         $request->file('resume'),
                         $resumeName,
