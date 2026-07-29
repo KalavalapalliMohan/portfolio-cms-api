@@ -11,7 +11,7 @@ class SettingResource extends JsonResource
      * Transform the resource into an array.
      *
      * @return array<string, mixed>
-     */ 
+     */
     public function toArray(Request $request): array
     {
         return [
@@ -22,15 +22,14 @@ class SettingResource extends JsonResource
             'phone'         => $this->phone,
             'location'      => $this->location,
             'about'         => $this->about,
+
+            // Supabase Storage URL
             'resume' => $this->resume,
-            'resume_url' => $this->resume
-                ? asset('storage/' . $this->resume)
-                : null,
+            'resume_url' => $this->resume,
+
+            // Supabase Storage URL
             'profile_image' => $this->profile_image,
-                        // Add this
-            'profile_image_url' => $this->profile_image
-                ? asset('storage/settings/' . $this->profile_image)
-                : null,
+            'profile_image_url' => $this->profile_image,
         ];
     }
 }
