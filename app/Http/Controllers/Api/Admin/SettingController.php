@@ -10,10 +10,14 @@ use App\Http\Requests\StoreSettingRequest;
 use App\Http\Requests\UpdateSettingRequest;
 use Illuminate\Http\JsonResponse;
 use App\Traits\ApiResponse;
+use Illuminate\Support\Facades\Storage;
+use Exception;
 
 class SettingController extends Controller
 {
     use ApiResponse;
+
+
     public function index(): JsonResponse
     {
         $settings = Setting::latest()->first();
@@ -24,44 +28,76 @@ class SettingController extends Controller
         );
     }
 
+
     public function store(StoreSettingRequest $request): JsonResponse
     {
         $data = $request->validated();
 
-        if ($request->hasFile('profile_image')) {
+        try {
 
-            $imageName = time() . '.' . $request->file('profile_image')->extension();
+            $disk = Storage::disk('s3');
 
-            $request->file('profile_image')->storeAs(
-                'settings',
-                $imageName,
-                'public'
+
+            // Profile Image Upload
+            if ($request->hasFile('profile_image')) {
+
+                $imageName = uniqid() . '.' .
+                    $request->file('profile_image')->extension();
+
+
+                $disk->putFileAs(
+                    'settings',
+                    $request->file('profile_image'),
+                    $imageName,
+                    'public'
+                );
+
+
+                $data['profile_image'] =
+                    $disk->url('settings/' . $imageName);
+            }
+
+
+            // Resume Upload
+            if ($request->hasFile('resume')) {
+
+                $resumeName = uniqid() . '_' .
+                    $request->file('resume')->getClientOriginalName();
+
+
+                $disk->putFileAs(
+                    'resume',
+                    $request->file('resume'),
+                    $resumeName,
+                    'public'
+                );
+
+
+                $data['resume'] =
+                    $disk->url('resume/' . $resumeName);
+            }
+
+
+            $setting = Setting::create($data);
+
+
+            return $this->successResponse(
+                new SettingResource($setting),
+                'Setting created successfully.',
+                201
             );
 
-            $data['profile_image'] = $imageName;
-        }
 
-        if ($request->hasFile('resume')) {
+        } catch (Exception $e) {
 
-            $resumeName = time() . '_' . $request->file('resume')->getClientOriginalName();
-
-            $request->file('resume')->storeAs(
-                'resume',
-                $resumeName,
-                'public'
+            return $this->errorResponse(
+                'File upload failed.',
+                $e->getMessage(),
+                500
             );
-
-            $data['resume'] = 'resume/' . $resumeName;
         }
-
-        $setting = Setting::create($data);
-
-        return $this->successResponse(
-            new SettingResource($setting),
-            'Setting created successfully.',
-            201
-        );
     }
+
 
 
     public function show(Setting $setting): JsonResponse
@@ -73,48 +109,92 @@ class SettingController extends Controller
     }
 
 
+
+
     public function update(UpdateSettingRequest $request, Setting $setting): JsonResponse
     {
         $data = $request->validated();
 
-        if ($request->hasFile('profile_image')) {
 
-            $imageName = time() . '.' . $request->file('profile_image')->extension();
+        try {
 
-            $request->file('profile_image')->storeAs(
-                'settings',
-                $imageName,
-                'public'
+            $disk = Storage::disk('s3');
+
+
+            // Profile Image Update
+            if ($request->hasFile('profile_image')) {
+
+
+                $imageName = uniqid() . '.' .
+                    $request->file('profile_image')->extension();
+
+
+                $disk->putFileAs(
+                    'settings',
+                    $request->file('profile_image'),
+                    $imageName,
+                    'public'
+                );
+
+
+                $data['profile_image'] =
+                    $disk->url('settings/' . $imageName);
+            }
+
+
+
+            // Resume Update
+            if ($request->hasFile('resume')) {
+
+
+                $resumeName = uniqid() . '_' .
+                    $request->file('resume')->getClientOriginalName();
+
+
+                $disk->putFileAs(
+                    'resume',
+                    $request->file('resume'),
+                    $resumeName,
+                    'public'
+                );
+
+
+                $data['resume'] =
+                    $disk->url('resume/' . $resumeName);
+            }
+
+
+
+            $setting->update($data);
+
+            $setting->refresh();
+
+
+
+            return $this->successResponse(
+                new SettingResource($setting),
+                'Setting updated successfully.'
             );
 
-            $data['profile_image'] = $imageName;
-        }
 
-        if ($request->hasFile('resume')) {
+        } catch (Exception $e) {
 
-            $resumeName = time() . '_' . $request->file('resume')->getClientOriginalName();
 
-            $request->file('resume')->storeAs(
-                'resume',
-                $resumeName,
-                'public'
+            return $this->errorResponse(
+                'File upload failed.',
+                $e->getMessage(),
+                500
             );
-
-            $data['resume'] = 'resume/' . $resumeName;
         }
-
-        $setting->update($data);
-
-        return $this->successResponse(
-            new SettingResource($setting),
-            'Setting updated successfully.'
-        );
     }
+
+
 
 
     public function destroy(Setting $setting): JsonResponse
     {
         $setting->delete();
+
 
         return $this->successResponse(
             null,
