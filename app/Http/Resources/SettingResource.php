@@ -33,8 +33,8 @@ class SettingResource extends JsonResource
             // Public URL
             'profile_image_url' => $this->profile_image
                 ? env('SUPABASE_URL')
-                    . '/storage/v1/object/public/settings/'
-                    . $this->profile_image
+                . '/storage/v1/object/public/settings/'
+                . $this->profile_image
                 : null,
 
 
@@ -46,8 +46,8 @@ class SettingResource extends JsonResource
             // Public URL
             'resume_url' => $this->resume
                 ? env('SUPABASE_URL')
-                    . '/storage/v1/object/public/'
-                    . $this->resume
+                . '/storage/v1/object/public/resume/'
+                . $this->resume
                 : null,
 
 

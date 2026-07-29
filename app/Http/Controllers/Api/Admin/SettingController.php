@@ -46,12 +46,12 @@ class SettingController extends Controller
                     $request->file('profile_image')->extension();
 
 
-                $disk->putFileAs(
-                    'settings',
-                    $request->file('profile_image'),
-                    $imageName,
-                    'public'
-                );
+                    $disk->putFileAs(
+                        '',
+                        $request->file('profile_image'),
+                        $imageName,
+                        'public'
+                    );
 
 
                 // Save only path
@@ -67,12 +67,12 @@ class SettingController extends Controller
                     $request->file('resume')->getClientOriginalName();
 
 
-                $disk->putFileAs(
-                    'resume',
-                    $request->file('resume'),
-                    $resumeName,
-                    'public'
-                );
+                    $disk->putFileAs(
+                        '',
+                        $request->file('resume'),
+                        $resumeName,
+                        'public'
+                    );
 
 
                 // Save only path
@@ -134,12 +134,12 @@ class SettingController extends Controller
                     $request->file('profile_image')->extension();
 
 
-                $disk->putFileAs(
-                    'settings',
-                    $request->file('profile_image'),
-                    $imageName,
-                    'public'
-                );
+                    $disk->putFileAs(
+                        '',
+                        $request->file('profile_image'),
+                        $imageName,
+                        'public'
+                    );
 
 
                 $data['profile_image'] = $imageName;
@@ -155,12 +155,12 @@ class SettingController extends Controller
                     $request->file('resume')->getClientOriginalName();
 
 
-                $disk->putFileAs(
-                    'resume',
-                    $request->file('resume'),
-                    $resumeName,
-                    'public'
-                );
+                    $disk->putFileAs(
+                        '',
+                        $request->file('resume'),
+                        $resumeName,
+                        'public'
+                    );
 
 
                 $data['resume'] = 'resume/' . $resumeName;
