@@ -11,6 +11,8 @@ use App\Http\Controllers\Api\Public\EducationController;
 use App\Http\Controllers\Api\Public\CertificateController;
 use App\Http\Controllers\Api\Public\ContactController;
 
+use App\Http\Controllers\Api\Public\PortfolioController;
+
 use App\Http\Controllers\Api\AuthController;
 // Admin Controllers
 use App\Http\Controllers\Api\Admin\ProjectController as AdminProjectController;
@@ -46,6 +48,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);// Protected route to logout
     Route::get('/me', [AuthController::class, 'me']);// Protected route to get authenticated user details
 });
+
+Route::get('/portfolio', [PortfolioController::class, 'index']);
 
 // Admin routes
 Route::middleware('auth:sanctum')
