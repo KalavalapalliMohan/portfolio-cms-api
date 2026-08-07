@@ -8,14 +8,16 @@ use App\Models\Skill;
 use App\Models\Experience;
 use App\Models\Message;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\Cache;
 class DashboardController extends Controller
 {
     public function index()
     {
         $totalMonths = 0;
 
-        $experiences = Experience::all();
+        $experiences = Cache::remember('experiences', 60 * 60, function () {
+            return Experience::all();
+        });
 
         foreach ($experiences as $experience) {
             $start = Carbon::parse($experience->start_date);

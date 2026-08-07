@@ -5,14 +5,16 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Message;
 use App\Traits\ApiResponse;
-
+use Illuminate\Support\Facades\Cache;
 class MessageController extends Controller
 {
     use ApiResponse;
 
     public function index()
     {
-        $messages = Message::latest()->paginate(10);
+        $messages = Cache::remember('messages', 60 * 60, function () {
+            return Message::latest()->paginate(10);
+        });
 
         return $this->successResponse($messages, 'Messages fetched successfully.');
     }

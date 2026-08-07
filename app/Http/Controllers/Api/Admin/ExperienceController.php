@@ -10,13 +10,15 @@ use App\Http\Requests\StoreExperienceRequest;
 use App\Http\Requests\UpdateExperienceRequest;
 use Illuminate\Http\JsonResponse;
 use App\Traits\ApiResponse;
-
+use Illuminate\Support\Facades\Cache;
 class ExperienceController extends Controller
 {
     use ApiResponse;
     public function index(): JsonResponse
     {
-        $experiences = Experience::latest()->paginate(10);
+        $experiences = Cache::remember('experiences', 60 * 60, function () {
+            return Experience::latest()->paginate(10);
+        });
 
         return $this->successResponse(
             ExperienceResource::collection($experiences),

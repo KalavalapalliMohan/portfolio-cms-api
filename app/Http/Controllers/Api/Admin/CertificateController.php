@@ -10,13 +10,15 @@ use App\Http\Requests\StoreCertificateRequest;
 use App\Http\Requests\UpdateCertificateRequest;
 use Illuminate\Http\JsonResponse;
 use App\Traits\ApiResponse;
-
+use Illuminate\Support\Facades\Cache;
 class CertificateController extends Controller
 {
     use ApiResponse;
     public function index(): JsonResponse
     {
-        $certificates = Certificate::latest()->paginate(10);
+        $certificates = Cache::remember('certificates', 60 * 60, function () {
+            return Certificate::latest()->paginate(10);
+        });
 
         return $this->successResponse(
             CertificateResource::collection($certificates),

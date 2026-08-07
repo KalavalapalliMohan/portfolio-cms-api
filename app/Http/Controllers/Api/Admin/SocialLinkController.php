@@ -10,13 +10,15 @@ use App\Http\Requests\StoreSocialLinkRequest;
 use App\Http\Requests\UpdateSocialLinkRequest;
 use Illuminate\Http\JsonResponse;
 use App\Traits\ApiResponse;
-
+use Illuminate\Support\Facades\Cache;
 class SocialLinkController extends Controller
 {
     use ApiResponse;
     public function index(): JsonResponse
     {
-        $socialLinks = SocialLink::latest()->paginate(10);
+        $socialLinks = Cache::remember('social_links', 60 * 60, function () {
+            return SocialLink::latest()->paginate(10);
+        });
 
         return $this->successResponse(
             SocialLinkResource::collection($socialLinks),

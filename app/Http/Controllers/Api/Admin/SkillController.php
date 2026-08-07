@@ -10,19 +10,20 @@ use App\Http\Requests\StoreSkillRequest;
 use App\Http\Requests\UpdateSkillRequest;
 use Illuminate\Http\JsonResponse;
 use App\Traits\ApiResponse;
-
+use Illuminate\Support\Facades\Cache;
 class SkillController extends Controller
 {
     use ApiResponse;
     public function index(Request $request): JsonResponse
     {
-        $skills = Skill::query()
-            ->when($request->filled('category'), function ($query) use ($request) {
-                $query->where('category', $request->category);
-            })
-            ->latest()
-            ->paginate($request->get('per_page', 10))
-            ->withQueryString();
+        $skills = Cache::remember('skills', 60 * 60, function () use ($request) {
+            return Skill::query()
+                ->when($request->filled('category'), function ($query) use ($request) {
+                    $query->where('category', $request->category);
+                })
+                ->latest()
+                ->paginate($request->get('per_page', 10));
+        });
 
         return $this->successResponse(
             SkillResource::collection($skills),

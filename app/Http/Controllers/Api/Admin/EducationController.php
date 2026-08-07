@@ -10,13 +10,15 @@ use App\Http\Requests\StoreEducationRequest;
 use App\Http\Requests\UpdateEducationRequest;
 use Illuminate\Http\JsonResponse;
 use App\Traits\ApiResponse;
-
+use Illuminate\Support\Facades\Cache;
 class EducationController extends Controller
 {
     use ApiResponse;
     public function index(): JsonResponse
     {
-        $educations = Education::latest()->paginate(10);
+        $educations = Cache::remember('educations', 60 * 60, function () {
+            return Education::latest()->paginate(10);
+        });
 
         return $this->successResponse(
             EducationResource::collection($educations),

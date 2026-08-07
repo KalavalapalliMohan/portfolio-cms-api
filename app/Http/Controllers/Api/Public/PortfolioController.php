@@ -20,42 +20,45 @@ use App\Http\Resources\ExperienceResource;
 use App\Http\Resources\EducationResource;
 use App\Http\Resources\CertificateResource;
 use App\Http\Resources\SocialLinkResource;
-
+use Illuminate\Support\Facades\Cache;
 class PortfolioController extends Controller
 {
     use ApiResponse;
 
     public function index()
     {
-        $portfolio = [
-            'settings' => new SettingResource(
-                Setting::latest()->first()
-            ),
+        $portfolio = Cache::remember('portfolio_data', 60 * 60, function () {
 
-            'skills' => SkillResource::collection(
-                Skill::orderBy('sort_order')->get()
-            ),
+            return [
+                'settings' => new SettingResource(
+                    Setting::latest()->first()
+                ),
 
-            'projects' => ProjectResource::collection(
-                Project::latest()->get()
-            ),
+                'skills' => SkillResource::collection(
+                    Skill::orderBy('sort_order')->get()
+                ),
 
-            'experiences' => ExperienceResource::collection(
-                Experience::latest()->get()
-            ),
+                'projects' => ProjectResource::collection(
+                    Project::latest()->get()
+                ),
 
-            'educations' => EducationResource::collection(
-                Education::latest()->get()
-            ),
+                'experiences' => ExperienceResource::collection(
+                    Experience::latest()->get()
+                ),
 
-            'certificates' => CertificateResource::collection(
-                Certificate::latest()->get()
-            ),
+                'educations' => EducationResource::collection(
+                    Education::latest()->get()
+                ),
 
-            'social_links' => SocialLinkResource::collection(
-                SocialLink::orderBy('sort_order')->get()
-            ),
-        ];
+                'certificates' => CertificateResource::collection(
+                    Certificate::latest()->get()
+                ),
+
+                'social_links' => SocialLinkResource::collection(
+                    SocialLink::orderBy('sort_order')->get()
+                ),
+            ];
+        });
 
         return $this->successResponse(
             $portfolio,

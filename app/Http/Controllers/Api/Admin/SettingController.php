@@ -12,7 +12,7 @@ use Illuminate\Http\JsonResponse;
 use App\Traits\ApiResponse;
 use Illuminate\Support\Facades\Storage;
 use Exception;
-
+use Illuminate\Support\Facades\Cache;
 class SettingController extends Controller
 {
     use ApiResponse;
@@ -20,7 +20,9 @@ class SettingController extends Controller
 
     public function index(): JsonResponse
     {
-        $settings = Setting::latest()->first();
+        $settings = Cache::remember('settings', 60 * 60, function () {
+            return Setting::latest()->first();
+        });
 
         return $this->successResponse(
             new SettingResource($settings),
